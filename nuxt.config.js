@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - nuxt-spanner-driver',
+    titleTemplate: '%s',
     title: 'nuxt-spanner-driver',
     htmlAttrs: {
       lang: 'en'
@@ -36,8 +36,21 @@ export default {
     '@nuxtjs/vuetify',
   ],
 
+  publicRuntimeConfig: {
+    DATABASE: process.env.DATABASE
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios'
+  ],
+
+  axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:3000'
+  },
+
+  serverMiddleware: [
+    { path: '/db', handler: '~/server/index.js' }
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -61,5 +74,14 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    extend(config, ctx) {
+      config.node = {
+        fs: 'empty',
+        child_process: 'empty',
+        dns: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      }
+    }
   }
 }
