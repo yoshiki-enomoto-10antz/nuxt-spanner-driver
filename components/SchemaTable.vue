@@ -65,12 +65,13 @@ export default {
     tableData() {
       return this.$store.getters.tableData
     },
-    items () {
-      return this.tableData[this.tableName] ?? []
+    items() {
+      return this.cloneTableData[this.tableName] ?? []
     }
   },
   data() {
     return {
+      cloneTableData: [],
       tableName: '',
       dialog: false
     }
@@ -81,6 +82,12 @@ export default {
     },
     async save (item) {
       await this.$axios.$post(`/db/table/${this.tableName}`, item)
+    }
+  },
+  watch: {
+    tableData() {
+      // storeのstateは直接いじれないのでdeep copy
+      this.cloneTableData = JSON.parse(JSON.stringify(this.tableData));
     }
   }
 }
