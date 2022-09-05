@@ -8,7 +8,17 @@
           label="Table"
           dense
           @change="fetchTableData"
-        ></v-combobox>
+        />
+        <v-dialog v-model="dialog" max-width="800px">
+          <template #activator="{ on, attrs }">
+            <v-btn class="ml-4" v-bind="attrs" v-on="on">Insert</v-btn>
+          </template>
+          <v-card>
+            <v-card-title primary-title>
+              後で実装
+            </v-card-title>
+          </v-card>
+        </v-dialog>
       </v-card-title>
     </v-card>
     <v-data-table
@@ -61,7 +71,8 @@ export default {
   },
   data() {
     return {
-      tableName: ''
+      tableName: '',
+      dialog: false
     }
   },
   methods: {

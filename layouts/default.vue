@@ -61,9 +61,9 @@ export default {
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          icon: 'mdi-book-open-page-variant',
+          title: 'History',
+          to: '/history'
         }
       ],
       title: `DB: ${$config.DATABASE}`
