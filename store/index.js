@@ -4,6 +4,9 @@ export const state = () => ({
 });
 
 export const mutations = {
+    removeData(state, payload) {
+        state.tableData[payload.tableName] = null
+    },
     addTableData(state, payload) {
         state.tableData = Object.assign({}, state.tableData, { [payload.name]: payload.row })
     },
@@ -24,6 +27,10 @@ export const actions = {
         if (!tableName || state.tableData[tableName]) return
         await this.$axios.$get(`/db/table/${tableName}`)
             .then(res => commit('addTableData', { name: tableName, row: res }))
+    },
+    async forceFetchTableData({ dispatch, commit }, payload) {
+        commit('removeData', payload)
+        dispatch('fetchTableData', payload)
     }
 };
 

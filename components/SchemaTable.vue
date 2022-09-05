@@ -19,6 +19,9 @@
             </v-card-title>
           </v-card>
         </v-dialog>
+        <v-btn class="ml-4" icon @click="forceFetchTableData">
+          <v-icon>mdi-reload</v-icon>
+        </v-btn>
       </v-card-title>
     </v-card>
     <v-data-table
@@ -77,6 +80,10 @@ export default {
     }
   },
   methods: {
+    async forceFetchTableData () {
+      console.log('click')
+      await this.$store.dispatch('forceFetchTableData', { tableName: this.tableName })
+    },
     async fetchTableData () {
       await this.$store.dispatch('fetchTableData', { tableName: this.tableName })
     },
