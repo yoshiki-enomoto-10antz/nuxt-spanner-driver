@@ -36,7 +36,7 @@
             :return-value.sync="props.item[header.value]"
             @save="save(props.item)"
           >
-            <div>{{ props.item[header.value] }}</div>
+            <div>{{ props.item[header.value] | textHider }}</div>
             <template v-slot:input>
               <v-text-field
                 v-model="props.item[header.value]"
@@ -96,7 +96,11 @@ export default {
       await this.$axios.$delete(`/db/table/${this.tableName}`, { data: item })
       await this.forceFetchTableData()
     }
-
+  },
+  filters: {
+    textHider (text) {
+      return text && text.length > 10 ? text.slice(0, 10) + "…" : text;
+    }
   },
   watch: {
     tableData() {
