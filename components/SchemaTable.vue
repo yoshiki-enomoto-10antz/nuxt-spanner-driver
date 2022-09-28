@@ -47,6 +47,9 @@
             </template>
           </v-edit-dialog>
       </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon @click="deleteItem(item)">mdi-delete</v-icon>
+    </template>
     </v-data-table>
   </div>
 </template>
@@ -60,7 +63,7 @@ export default {
       return this.items.length > 0 ? Object.keys(this.items[0]).map(key => {
         if (['CreateTime', 'UpdateTime', 'DeleteTime'].includes(key)) return null
         return { text: key, value: key }
-      }).filter(v => v) : []
+      }).filter(v => v).concat({ text: 'Delete', value: 'actions', sortable: false }) : []
     },
     tableNameList() {
       return this.$store.getters.tableNameList
@@ -81,7 +84,6 @@ export default {
   },
   methods: {
     async forceFetchTableData () {
-      console.log('click')
       await this.$store.dispatch('forceFetchTableData', { tableName: this.tableName })
     },
     async fetchTableData () {
@@ -89,7 +91,12 @@ export default {
     },
     async save (item) {
       await this.$axios.$post(`/db/table/${this.tableName}`, item)
+    },
+    async deleteItem(item) {
+      await this.$axios.$delete(`/db/table/${this.tableName}`, { data: item })
+      await this.forceFetchTableData()
     }
+
   },
   watch: {
     tableData() {

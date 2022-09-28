@@ -32,5 +32,13 @@ app.post('/table/:tablename', async (req, res) => {
         .catch(e => res.status(500).send(e))
 })
 
+app.delete('/table/:tablename', async (req, res) => {
+    const tablename = req.params.tablename
+    const table = spanner.table(tablename)
+    const key = Object.keys(req.body)[0] // 最初がIDのはず
+    await table.deleteRows([req.body[key]])
+        .then(_ => res.send('ok'))
+        .catch(e => res.status(500).send(e))
+})
 
 module.exports = app
